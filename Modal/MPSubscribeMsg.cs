@@ -32,6 +32,19 @@ namespace Leestar54.WeChat.WebAPI.Modal
         /// 公众号昵称
         /// </summary>
         public string NickName { get; set; }
+
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var mpa in MPArticleList)
+            {
+                sb.Append("{" + mpa + "},");
+            }
+
+            return $"\"UserName\":\"{UserName.HTrim()}\", \"MPArticleCount\":{MPArticleCount}, \"Time\":{Time}, \"NickName\":\"{NickName.HTrim()}\", \"MPArticleList\":[{sb.ToString().TrimEnd(',')}]";
+        }
     }
 
 }
