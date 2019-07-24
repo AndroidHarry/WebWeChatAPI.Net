@@ -156,5 +156,17 @@ namespace Leestar54.WeChat.WebAPI.Modal
         /// 
         /// </summary>
         public string OriContent { get; set; }
+
+
+        public override string ToString()
+        {
+            string msgId = string.IsNullOrEmpty(MsgId) ? "" : $"\"MsgId\":\"{MsgId}\",";
+            string fromUserName = string.IsNullOrEmpty(FromUserName) ? "" : $"\"FromUserName\":\"{FromUserName}\",";
+            string toUserName = string.IsNullOrEmpty(ToUserName) ? "" : $"\"ToUserName\":\"{ToUserName}\",";
+            string msgType = $"\"MsgType\":\"{Enum.GetName(typeof(MsgType), MsgType)}\",";
+            string content = string.IsNullOrEmpty(Content) ? "" : $"\"Content\":\"{Content.HTrim().ReplaceQuotationMarks()}\",";
+
+            return $"{msgId}{fromUserName}{toUserName}{msgType}{content}".TrimEnd(',');
+        }
     }
 }

@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HStrUtils.cs" />
     <Compile Include="HttpClient.cs" />
     <Compile Include="Modal\AddMsgList.cs" />
     <Compile Include="Modal\AppInfo.cs" />
