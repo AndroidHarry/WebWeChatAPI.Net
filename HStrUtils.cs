@@ -45,10 +45,5 @@ namespace Leestar54.WeChat.WebAPI
 
             return $"[{sb.ToString().TrimEnd(',')}]";
         }
-
-        public static string Fixml(this string xml)
-        {
-            return xml;
-        }
     }
 }
