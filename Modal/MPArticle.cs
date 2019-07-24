@@ -23,5 +23,11 @@ namespace Leestar54.WeChat.WebAPI.Modal
         /// 文章地址
         /// </summary>
         public string Url { get; set; }
+
+
+        public override string ToString()
+        {
+            return $"\"Title\":\"{Title.HTrim()}\",\"Digest\":\"{Digest.HTrim()}\",\"Cover\":\"{Cover.HTrim()}\",\"Url\":\"{Url.HTrim()}\"";
+        }
     }
 }
