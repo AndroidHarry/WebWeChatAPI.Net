@@ -51,6 +51,7 @@
     <Compile Include="HStrUtils.cs" />
     <Compile Include="HTrace.cs" />
     <Compile Include="HttpClient.cs" />
+    <Compile Include="HXmlUtils.cs" />
     <Compile Include="Modal\AddMsgList.cs" />
     <Compile Include="Modal\AppInfo.cs" />
     <Compile Include="Modal\BaseRequest.cs" />
