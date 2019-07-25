@@ -46,5 +46,10 @@ namespace Leestar54.WeChat.WebAPI
 
             return $"[{sb.ToString().TrimEnd(',')}]";
         }
+
+        public static string ToJson(this User user)
+        {
+            return $"{{{user}}}";
+        }
     }
 }

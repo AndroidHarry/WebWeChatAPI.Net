@@ -281,7 +281,7 @@ namespace Test
 
             foreach (var item in e.Result)
             {
-                Trace("获取联系人列表（包括公众号，联系人），" + item.UserName);
+                Trace("获取联系人列表（包括公众号，联系人），" + item.ToJson());
 
                 if (!contactDict.Keys.Contains(item.UserName))
                 {
@@ -313,7 +313,7 @@ namespace Test
                 if (!contactDict.Keys.Contains(item.UserName))
                 {
                     contactDict.Add(item.UserName, item);
-                    Trace("拉取联系人信息：" + item.UserName);
+                    Trace("拉取联系人信息：" + item.ToJson());
                 }
             }
         }

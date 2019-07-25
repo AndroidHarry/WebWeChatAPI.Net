@@ -118,6 +118,27 @@ namespace Leestar54.WeChat.WebAPI.Modal
         /// 公众号是0，其他包括1，16，17，49，129，145，177
         /// </summary>
         public int SnsFlag { get; set; }
-    }
 
+
+        public override string ToString()
+        {
+            string remarkName = string.IsNullOrEmpty(RemarkName) ? "" : $"\"RemarkName\":\"{RemarkName}\",";
+            //string pyInitial = string.IsNullOrEmpty(PYInitial) ? "" : $"\"PYInitial\":\"{PYInitial}\",";
+            //string pyQuanPin = string.IsNullOrEmpty(PYQuanPin) ? "" : $"\"PYQuanPin\":\"{PYQuanPin}\",";
+            //string remarkPYInitial = string.IsNullOrEmpty(RemarkPYInitial) ? "" : $"\"RemarkPYInitial\":\"{RemarkPYInitial}\",";
+            //string remarkPYQuanPin = string.IsNullOrEmpty(RemarkPYQuanPin) ? "" : $"\"RemarkPYQuanPin\":\"{RemarkPYQuanPin}\",";
+
+            string sex = Sex == 0 ? "公众号" : (Sex == 1 ? "男" : "女");
+            sex = $"\"Sex\":\"{sex}\",";
+
+            string signature = string.IsNullOrEmpty(Signature) ? "" : $"\"Signature\":\"{Signature}\",";
+
+            return $"\"Uin\":\"{Uin}\",\"UserName\":\"{UserName}\",\"NickName\":\"{NickName}\",\"HeadImgUrl\":\"{HeadImgUrl}\"," +
+                   $"\"NickName\":\"{NickName}\",{remarkName}" +
+                   //$"{pyInitial}{pyQuanPin}{remarkPYInitial}{remarkPYQuanPin}" +
+                   $"\"StarFriend\":{StarFriend},{sex}{signature}\"AppAccountFlag\":{AppAccountFlag}," +
+                   $"\"VerifyFlag\":{VerifyFlag},\"ContactFlag\":\"{ContactFlag}\",\"WebWxPluginSwitch\":{WebWxPluginSwitch}," +
+                   $"\"HeadImgFlag\":{HeadImgFlag},\"SnsFlag\":{SnsFlag},".TrimEnd(',');
+        }
+    }
 }
