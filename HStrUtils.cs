@@ -11,12 +11,13 @@ namespace Leestar54.WeChat.WebAPI
     {
         /// <summary>
         /// 去除 回车 制表 符, 空格
+        /// 不能去除 空格, AddMsg 的 Content 字段内部是 xml 信息，去除 空格 后，会导致解析不了 ！！！
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
-        public static string HTrim(this string str)
+        public static string HTrimSpechar(this string str)
         {
-            return str.Replace("\n", "").Replace(" ", "").Replace("\t", "").Replace("\r", "");
+            return str.Replace("\n", "").Replace("\t", "").Replace("\r", "");
         }
 
         public static string ReplaceQuotationMarks(this string str)

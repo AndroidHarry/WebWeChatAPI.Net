@@ -27,7 +27,7 @@ namespace Leestar54.WeChat.WebAPI.Modal
 
         public override string ToString()
         {
-            return $"\"Title\":\"{Title.HTrim()}\",\"Digest\":\"{Digest.HTrim()}\",\"Cover\":\"{Cover.HTrim()}\",\"Url\":\"{Url.HTrim()}\"";
+            return $"\"Title\":\"{Title.HTrimSpechar()}\",\"Digest\":\"{Digest.HTrimSpechar()}\",\"Cover\":\"{Cover.HTrimSpechar()}\",\"Url\":\"{Url.HTrimSpechar()}\"";
         }
     }
 }

@@ -43,7 +43,7 @@ namespace Leestar54.WeChat.WebAPI.Modal
                 sb.Append("{" + mpa + "},");
             }
 
-            return $"\"UserName\":\"{UserName.HTrim()}\", \"MPArticleCount\":{MPArticleCount}, \"Time\":{Time}, \"NickName\":\"{NickName.HTrim()}\", \"MPArticleList\":[{sb.ToString().TrimEnd(',')}]";
+            return $"\"UserName\":\"{UserName.HTrimSpechar()}\", \"MPArticleCount\":{MPArticleCount}, \"Time\":{Time}, \"NickName\":\"{NickName.HTrimSpechar()}\", \"MPArticleList\":[{sb.ToString().TrimEnd(',')}]";
         }
     }
 

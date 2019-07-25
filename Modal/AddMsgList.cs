@@ -164,7 +164,7 @@ namespace Leestar54.WeChat.WebAPI.Modal
             string fromUserName = string.IsNullOrEmpty(FromUserName) ? "" : $"\"FromUserName\":\"{FromUserName}\",";
             string toUserName = string.IsNullOrEmpty(ToUserName) ? "" : $"\"ToUserName\":\"{ToUserName}\",";
             string msgType = $"\"MsgType\":\"{Enum.GetName(typeof(MsgType), MsgType)}\",";
-            string content = string.IsNullOrEmpty(Content) ? "" : $"\"Content\":\"{Content.HTrim().ReplaceQuotationMarks()}\",";
+            string content = string.IsNullOrEmpty(Content) ? "" : $"\"Content\":\"{Content.HTrimSpechar().ReplaceQuotationMarks()}\",";
 
             return $"{msgId}{fromUserName}{toUserName}{msgType}{content}".TrimEnd(',');
         }
