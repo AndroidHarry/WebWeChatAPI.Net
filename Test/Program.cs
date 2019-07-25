@@ -12,10 +12,29 @@ using System.Windows.Forms;
 
 namespace Test
 {
-
-
     class Program
     {
+        #region nlog
+        static NLog.Logger logger = null;
+        private static void Trace(string s)
+        {
+            if (logger == null)
+            {
+                logger = NLog.LogManager.GetCurrentClassLogger();
+            }
+            logger.Trace(s);
+        }
+        private static void Info(string s)
+        {
+            if (logger == null)
+            {
+                logger = NLog.LogManager.GetCurrentClassLogger();
+            }
+            logger.Info(s);
+        }
+        #endregion
+
+
         private static Client client;
         private static Dictionary<string, Contact> contactDict = new Dictionary<string, Contact>();
         private static QrCodeForm qrForm;
@@ -23,6 +42,11 @@ namespace Test
         [STAThread]
         static void Main(string[] args)
         {
+            //HXmlUtils.testXml();
+            //return;
+
+            Info("Hello World");
+
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
@@ -50,7 +74,7 @@ namespace Test
             client.ReceiveMsg += Client_ReceiveMsg; ;
             client.DelContactListComplete += Client_DelContactListComplete; ;
             client.ModContactListComplete += Client_ModContactListComplete;
-            Console.WriteLine("小助手启动");
+            Trace("小助手启动");
             client.Start(cookie);
             //qrForm.ShowDialog();
 
@@ -87,12 +111,12 @@ namespace Test
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            Console.WriteLine(e.ToString());
+            Trace(e.ToString());
         }
 
         private static void Client_ModContactListComplete(object sender, TEventArgs<List<Contact>> e)
         {
-            Console.WriteLine("接收修改联系人信息");
+            Trace("接收修改联系人信息");
             foreach (var item in e.Result)
             {
                 contactDict[item.UserName] = item;
@@ -101,13 +125,25 @@ namespace Test
 
         private static void Client_DelContactListComplete(object sender, TEventArgs<List<DelContactItem>> e)
         {
-            Console.WriteLine("接收删除联系人信息");
+            Trace("接收删除联系人信息");
         }
 
         private static void Client_ReceiveMsg(object sender, TEventArgs<List<AddMsg>> e)
         {
             try
             {
+                var logger = NLog.LogManager.GetCurrentClassLogger();
+
+                logger.Trace("Client_ReceiveMsg，总数：" + e.Result.Count);
+
+                logger.Trace(e.Result.ToJson());
+
+                List<MPSubscribeMsg> lstMPSubscribeMsg = e.Result.ExtractMPSubscribeMsg();
+                if (lstMPSubscribeMsg != null)
+                {
+                    logger.Trace($"解析得到的公众号文章列表: {lstMPSubscribeMsg.ToJson()}");
+                }
+
                 foreach (var item in e.Result)
                 {
                     switch (item.MsgType)
@@ -119,11 +155,11 @@ namespace Test
                                 {
                                     //群消息，内容格式为[群内username];<br/>[content]，例如Content=@ffda8da3471b87ff22a6a542c5581a6efd1b883698db082e529e8e877bef79b6:<br/>哈哈
                                     string[] content = item.Content.Split(new string[] { ":<br/>" }, StringSplitOptions.RemoveEmptyEntries);
-                                    Console.WriteLine(contactDict[item.FromUserName].NickName + "：" + contactDict[item.FromUserName].MemberDict[content[0]].NickName + "：" + content[1]);
+                                    Trace(contactDict[item.FromUserName].NickName + "：" + contactDict[item.FromUserName].MemberDict[content[0]].NickName + "：" + content[1]);
                                 }
                                 else
                                 {
-                                    Console.WriteLine(contactDict[item.FromUserName].NickName + "：" + item.Content);
+                                    Trace(contactDict[item.FromUserName].NickName + "：" + item.Content);
                                 }
                             }
                             else
@@ -222,26 +258,31 @@ namespace Test
             }
             catch (Exception err)
             {
-                Console.WriteLine("异常：" + err.Message);
+                Trace("异常：" + err.Message);
             }
         }
 
         private static void Client_LogoutComplete(object sender, TEventArgs<User> e)
         {
-            Console.WriteLine("已登出");
+            Trace("已登出");
             Application.Exit();
         }
 
         private static void Client_MPSubscribeMsgListComplete(object sender, TEventArgs<List<MPSubscribeMsg>> e)
         {
-            Console.WriteLine("获取公众号文章，总数：" + e.Result.Count);
+            Trace("获取公众号文章，总数：" + e.Result.Count);
+
+            Trace(e.Result.ToJson());
         }
 
         private static void Client_GetContactComplete(object sender, TEventArgs<List<Contact>> e)
         {
-            Console.WriteLine("获取联系人列表（包括公众号，联系人），总数：" + e.Result.Count);
+            Trace("获取联系人列表（包括公众号，联系人），总数：" + e.Result.Count);
+
             foreach (var item in e.Result)
             {
+                Trace("获取联系人列表（包括公众号，联系人），" + item.UserName);
+
                 if (!contactDict.Keys.Contains(item.UserName))
                 {
                     contactDict.Add(item.UserName, item);
@@ -266,12 +307,13 @@ namespace Test
 
         private static void Client_BatchGetContactComplete(object sender, TEventArgs<List<Contact>> e)
         {
-            Console.WriteLine("拉取联系人信息，总数：" + e.Result.Count);
+            Trace("拉取联系人信息，总数：" + e.Result.Count);
             foreach (var item in e.Result)
             {
                 if (!contactDict.Keys.Contains(item.UserName))
                 {
                     contactDict.Add(item.UserName, item);
+                    Trace("拉取联系人信息：" + item.UserName);
                 }
             }
         }
@@ -279,8 +321,8 @@ namespace Test
         private static void Client_LoginComplete(object sender, TEventArgs<User> e)
         {
             string cookie = client.GetLastCookie();
-            Console.WriteLine("登陆成功：" + e.Result.NickName);
-            Console.WriteLine("========已记录cookie，下次登陆将推送提醒至手机，取代扫码========");
+            Trace("登陆成功：" + e.Result.NickName);
+            Trace("========已记录cookie，下次登陆将推送提醒至手机，取代扫码========");
             using (StreamWriter sw = new StreamWriter(cookiePath,false))
             {
                 sw.WriteLine(cookie);
@@ -297,13 +339,13 @@ namespace Test
 
         private static void Client_CheckScanComplete(object sender, TEventArgs<System.Drawing.Image> e)
         {
-            Console.WriteLine("用户已扫码");
+            Trace("用户已扫码");
             qrForm.SetPic(e.Result);
         }
 
         private static void Client_GetLoginQrCodeComplete(object sender, TEventArgs<System.Drawing.Image> e)
         {
-            Console.WriteLine("已获取登陆二维码");
+            Trace("已获取登陆二维码");
             qrForm.SetPic(e.Result);
             qrForm.ShowDialog();
         }
@@ -312,17 +354,17 @@ namespace Test
         {
             if (e.Result is GetContactException)
             {
-                Console.WriteLine("获取好友列表异常：" + e.Result.ToString());
+                Trace("获取好友列表异常：" + e.Result.ToString());
                 return;
             }
 
             if (e.Result is OperateFailException)
             {
-                Console.WriteLine("异步操作异常：" + e.Result.ToString());
+                Trace("异步操作异常：" + e.Result.ToString());
                 return;
             }
 
-            Console.WriteLine("异常：" + e.Result.ToString());
+            Trace("异常：" + e.Result.ToString());
         }
     }
 }
