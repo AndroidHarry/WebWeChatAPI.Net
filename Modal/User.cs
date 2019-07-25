@@ -81,7 +81,7 @@ namespace Leestar54.WeChat.WebAPI.Modal
         /// </summary>
         public int StarFriend { get; set; }
         /// <summary>
-        ///0公众号, 1男，2女
+        ///0=公众号或群, 1=男，2=女
         /// </summary>
         public int Sex { get; set; }
         /// <summary>
@@ -128,7 +128,7 @@ namespace Leestar54.WeChat.WebAPI.Modal
             //string remarkPYInitial = string.IsNullOrEmpty(RemarkPYInitial) ? "" : $"\"RemarkPYInitial\":\"{RemarkPYInitial}\",";
             //string remarkPYQuanPin = string.IsNullOrEmpty(RemarkPYQuanPin) ? "" : $"\"RemarkPYQuanPin\":\"{RemarkPYQuanPin}\",";
 
-            string sex = Sex == 0 ? "公众号" : (Sex == 1 ? "男" : "女");
+            string sex = Sex == 0 ? "公众号或群" : (Sex == 1 ? "男" : "女");
             sex = $"\"Sex\":\"{sex}\",";
 
             string signature = string.IsNullOrEmpty(Signature) ? "" : $"\"Signature\":\"{Signature}\",";
