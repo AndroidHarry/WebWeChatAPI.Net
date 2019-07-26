@@ -22,6 +22,9 @@ namespace Leestar54.WeChat.WebAPI.Modal
 
     /// <summary>
     /// 用户信息
+    /// 文件传输助手: "UserName":filehelper,"NickName":文件传输助手,"VerifyFlag":0,"SnsFlag":0
+    /// 群聊: VerifyFlag=0 and SnsFlag=0 and Sex=0 and UserName.StartWith("@@")
+    /// 公众号: VerifyFlag>0
     /// </summary>
     public class User
     {
@@ -115,7 +118,7 @@ namespace Leestar54.WeChat.WebAPI.Modal
         public int HeadImgFlag { get; set; }
         /// <summary>
         /// 含义未知
-        /// 公众号是0，其他包括1，16，17，49，129，145，177
+        /// 公众号或群是0，其他包括1，16，17，49，129，145，177
         /// </summary>
         public int SnsFlag { get; set; }
 
