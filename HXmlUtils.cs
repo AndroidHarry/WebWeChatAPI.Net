@@ -31,7 +31,8 @@ namespace Leestar54.WeChat.WebAPI
 
         public static MPSubscribeMsg ExtractMPSubscribeMsg(this AddMsg msg)
         {
-            if (msg.MsgType != MsgType.MM_DATA_APPMSG)
+            if ((msg.MsgType != MsgType.MM_DATA_APPMSG) ||
+                (msg.FromUserName.StartsWith("@@")))    //  群聊
                 return null;
 
             XmlContent xc = new XmlContent(msg.Content);
