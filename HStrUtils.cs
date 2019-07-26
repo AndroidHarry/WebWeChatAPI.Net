@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Leestar54.WeChat.WebAPI
 {
@@ -27,6 +28,9 @@ namespace Leestar54.WeChat.WebAPI
 
         public static string ToJson(this List<MPSubscribeMsg> lst)
         {
+#if true
+            return JsonConvert.SerializeObject(lst);
+#else
             StringBuilder sb = new StringBuilder();
             foreach (var msg in lst)
             {
@@ -34,10 +38,14 @@ namespace Leestar54.WeChat.WebAPI
             }
 
             return $"[{sb.ToString().TrimEnd(',')}]";
+#endif
         }
 
         public static string ToJson(this List<AddMsg> lst)
         {
+#if true
+            return JsonConvert.SerializeObject(lst);
+#else
             StringBuilder sb = new StringBuilder();
             foreach (var msg in lst)
             {
@@ -45,11 +53,16 @@ namespace Leestar54.WeChat.WebAPI
             }
 
             return $"[{sb.ToString().TrimEnd(',')}]";
+#endif
         }
 
         public static string ToJson(this User user)
         {
+#if true
+            return JsonConvert.SerializeObject(user);
+#else
             return $"{{{user}}}";
+#endif
         }
     }
 }
